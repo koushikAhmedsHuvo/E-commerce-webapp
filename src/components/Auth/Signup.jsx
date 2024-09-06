@@ -2,13 +2,59 @@ import React, { useState } from 'react';
 import Chair from '../../assets/chair.png';
 import Frame from '../../assets/Frame.png';
 import Visibility from '../../assets/visibility.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [firstNameFocused, setFirstNameFocused] = useState(false);
   const [lastNameFocused, setLastNameFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  // Handle form submission
+  const handleSignup = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    // Check if email already exists
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const emailExists = existingUsers.some((user) => user.email === email);
+
+    if (emailExists) {
+      setError('Email is already in use. Please use a different email.');
+      setIsLoading(false);
+      return;
+    }
+
+    // Save new user to local storage
+    const newUser = { firstName, lastName, email, password };
+    existingUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(existingUsers));
+
+    // Clear form fields
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+    setIsLoading(false);
+
+    // Redirect to login page
+    navigate('/');
+  };
+
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   return (
     <div className="w-[1440px] h-[1024px] flex items-center justify-center bg-white">
@@ -17,7 +63,6 @@ const Signup = () => {
         <div className="w-[752px]">
           {/* Form section */}
           <div className="w-[500px] h-[618px] mt-[203px] ml-[126px] gap-[14px] bg-[#FAFAFA] border border-[#F5F5F5] opacity-100 p-[24px]">
-            {/* This div contains the signup form and its elements */}
             <div className="text-center w-[452px] h-[116px] gap-6">
               <h1 className="text-[24px] font-semibold text-gray-800">
                 Welcome To
@@ -30,13 +75,18 @@ const Signup = () => {
               </p>
             </div>
 
-            <form action="" className="space-y-4 mt-6">
+            <form onSubmit={handleSignup} className="space-y-4 mt-6">
+              {/* Error Message */}
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+
               {/* First and Last Name */}
               <div className="flex space-x-4">
                 <div className="relative w-[219px]">
                   <input
                     type="text"
                     id="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     onFocus={() => setFirstNameFocused(true)}
                     onBlur={() => setFirstNameFocused(false)}
                     placeholder=" "
@@ -45,7 +95,9 @@ const Signup = () => {
                   <label
                     htmlFor="firstName"
                     className={`absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-400 transition-transform duration-200 ${
-                      firstNameFocused ? '-translate-y-6 text-xs' : ''
+                      firstNameFocused || firstName
+                        ? '-translate-y-6 text-xs'
+                        : ''
                     }`}
                   >
                     First name (optional)
@@ -55,6 +107,8 @@ const Signup = () => {
                   <input
                     type="text"
                     id="lastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     onFocus={() => setLastNameFocused(true)}
                     onBlur={() => setLastNameFocused(false)}
                     placeholder=" "
@@ -63,7 +117,9 @@ const Signup = () => {
                   <label
                     htmlFor="lastName"
                     className={`absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-400 transition-transform duration-200 ${
-                      lastNameFocused ? '-translate-y-6 text-xs' : ''
+                      lastNameFocused || lastName
+                        ? '-translate-y-6 text-xs'
+                        : ''
                     }`}
                   >
                     Last name (optional)
@@ -76,15 +132,18 @@ const Signup = () => {
                 <input
                   type="email"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
                   placeholder=" "
                   className="w-[452px] h-[52px] px-4 py-2 border border-[#DEDEDE] rounded-md bg-white focus:outline-none"
+                  required
                 />
                 <label
                   htmlFor="email"
                   className={`absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-400 transition-transform duration-200 ${
-                    emailFocused ? '-translate-y-6 text-xs' : ''
+                    emailFocused || email ? '-translate-y-6 text-xs' : ''
                   }`}
                 >
                   Email
@@ -94,22 +153,26 @@ const Signup = () => {
               {/* Password with visibility icon */}
               <div className="relative">
                 <input
-                  type="password"
+                  type={passwordVisible ? 'text' : 'password'}
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   onFocus={() => setPasswordFocused(true)}
                   onBlur={() => setPasswordFocused(false)}
                   placeholder=" "
                   className="w-[452px] h-[52px] px-4 py-2 border border-[#DEDEDE] rounded-md bg-white focus:outline-none"
+                  required
                 />
                 <img
                   src={Visibility}
                   alt="Show password"
                   className="absolute top-1/2 right-4 transform -translate-y-1/2 w-6 h-6 cursor-pointer"
+                  onClick={togglePasswordVisibility}
                 />
                 <label
                   htmlFor="password"
                   className={`absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-400 transition-transform duration-200 ${
-                    passwordFocused ? '-translate-y-6 text-xs' : ''
+                    passwordFocused || password ? '-translate-y-6 text-xs' : ''
                   }`}
                 >
                   Password
@@ -118,7 +181,7 @@ const Signup = () => {
 
               {/* Terms and conditions */}
               <div className="flex items-center space-x-2">
-                <input type="checkbox" id="terms" />
+                <input type="checkbox" id="terms" required />
                 <label
                   htmlFor="terms"
                   className="text-gray-600 text-[16px] font-medium"
@@ -128,8 +191,14 @@ const Signup = () => {
               </div>
 
               {/* Signup Button */}
-              <button className="w-[452px] h-[56px] bg-black text-white font-medium rounded-md">
-                Sign Up
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`w-[452px] h-[56px] bg-black text-white font-medium rounded-md ${
+                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              >
+                {isLoading ? 'Signing Up...' : 'Sign Up'}
               </button>
 
               {/* Horizontal lines and "or" text */}
@@ -145,15 +214,13 @@ const Signup = () => {
                   Sign in with Google
                 </button>
                 <button className="w-[218px] h-[52px] bg-white border border-[#DEDEDE] rounded-md">
-                  Sign in with Apple
+                  Sign in with Facebook
                 </button>
               </div>
-
-              {/* Login link */}
               <p className="text-center text-gray-600 mt-4">
                 Have an account?{' '}
                 <Link to="/" className="text-[#BF2879] hover:underline">
-                  Sign up
+                  Signin
                 </Link>
               </p>
             </form>

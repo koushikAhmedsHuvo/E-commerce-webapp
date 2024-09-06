@@ -1,12 +1,49 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Chair from '../../assets/chair.png';
 import Frame from '../../assets/Frame.png';
 import Visibility from '../../assets/visibility.png';
+import VisibilityOff from '../../assets/visibility.png'; // Corrected icon for hiding password
 import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Hook for navigation
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(
+        (user) => user.email === email && user.password === password
+      );
+
+      if (user) {
+        // Redirect to the dashboard upon successful login
+        navigate('/dashboard');
+      } else {
+        // Set error message if login fails
+        setError('Invalid email or password');
+      }
+    } catch (error) {
+      // Handle any unexpected errors
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   return (
     <div className="w-[1440px] h-[1024px] flex items-center justify-center bg-white">
@@ -27,12 +64,14 @@ const Login = () => {
               </div>
             </div>
 
-            <form action="" className="space-y-4 mt-6">
+            <form onSubmit={handleSubmit} className="space-y-4 mt-6">
               {/* Email */}
               <div className="relative">
                 <input
                   type="email"
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
                   placeholder=" "
@@ -51,16 +90,19 @@ const Login = () => {
               {/* Password with visibility icon */}
               <div className="relative">
                 <input
-                  type="password"
+                  type={passwordVisible ? 'text' : 'password'}
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   onFocus={() => setPasswordFocused(true)}
                   onBlur={() => setPasswordFocused(false)}
                   placeholder=" "
                   className="w-[452px] h-[52px] px-4 py-2 border border-[#DEDEDE] rounded-md bg-white focus:outline-none"
                 />
                 <img
-                  src={Visibility}
-                  alt="Show password"
+                  src={passwordVisible ? Visibility : VisibilityOff}
+                  alt="Toggle password visibility"
+                  onClick={togglePasswordVisibility}
                   className="absolute top-1/2 right-4 transform -translate-y-1/2 w-6 h-6 cursor-pointer"
                 />
                 <label
@@ -72,6 +114,11 @@ const Login = () => {
                   Password
                 </label>
               </div>
+
+              {/* Error message */}
+              {error && (
+                <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
+              )}
 
               {/* Forget password */}
               <div className="flex justify-end">
@@ -94,8 +141,12 @@ const Login = () => {
               </div>
 
               {/* Sign In Button */}
-              <button className="w-[452px] h-[56px] bg-black text-white font-medium rounded-md">
-                Sign In
+              <button
+                type="submit"
+                className="w-[452px] h-[56px] bg-black text-white font-medium rounded-md"
+                disabled={loading}
+              >
+                {loading ? 'Signing In...' : 'Sign In'}
               </button>
 
               {/* Horizontal lines and "or" text */}

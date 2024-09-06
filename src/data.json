@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "image": "https://i.ibb.co/6YfNHYK/Image1.png",
+    "title": "Recliner Chair Wood",
+    "price": "$390",
+    "description": "It has a backrest that can be tilted back, often a footrest extended."
+  },
+  {
+    "id": 2,
+    "image": "https://i.ibb.co/HpWCCBg/Image2.png",
+    "title": "Recliner Chair Wood",
+    "price": "$390",
+    "description": "It has a backrest that can be tilted back, often a footrest extended."
+  },
+  {
+    "id": 3,
+    "image": "https://i.ibb.co/Zx5pvRJ/Image3.png",
+    "title": "Recliner Chair Wood",
+    "price": "$390",
+    "description": "It has a backrest that can be tilted back, often a footrest extended."
+  },
+  {
+    "id": 4,
+    "image": "https://i.ibb.co/72SyG62/Image4.png",
+    "title": "Recliner Chair Wood",
+    "price": "$390",
+    "description": "It has a backrest that can be tilted back, often a footrest extended."
+  },
+  {
+    "id": 5,
+    "image": "https://i.ibb.co/HC4bYgK/Image5.png",
+    "title": "Recliner Chair Wood",
+    "price": "$390",
+    "description": "It has a backrest that can be tilted back, often a footrest extended."
+  },
+  {
+    "id": 6,
+    "image": "https://i.ibb.co/nPWxS4v/Image6.png",
+    "title": "Recliner Chair Wood",
+    "price": "$390",
+    "description": "It has a backrest that can be tilted back, often a footrest extended."
+  }
+]
