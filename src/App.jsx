@@ -2,11 +2,10 @@ import Signup from './components/Auth/Signup';
 import Login from './components/Auth/Login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './components/context/AuthContext';
-import DashBoard from './components/Dashboard/DashBoard';
-import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
-import Produccts from './components/Products/Produccts';
 import Store from './components/Page/Store';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'; // Import the ProtectedRoute component
+import OrderPage from './components/Page/OrderPage';
+import TestComponent from './components/Auth/TestComponent';
 
 function App() {
   return (
@@ -17,7 +16,11 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
 
-            <Route path="/dashboard" element={<Store />} />
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute element={<Store />} />}
+            />
+            <Route path="/order" element={<OrderPage />} />
           </Routes>
         </AuthProvider>
       </Router>

@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Chair from '../../assets/chair.png';
 import Frame from '../../assets/Frame.png';
 import Visibility from '../../assets/visibility.png';
 import VisibilityOff from '../../assets/visibility.png'; // Corrected icon for hiding password
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext'; // Import the AuthContext
 
 const Login = () => {
-  const [passwordFocused, setPasswordFocused] = useState(false);
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
+
+  const { login } = useContext(AuthContext); // Access login from AuthContext
   const navigate = useNavigate(); // Hook for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(''); // Reset error message on submit
 
     try {
       const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -27,14 +31,16 @@ const Login = () => {
       );
 
       if (user) {
-        // Redirect to the dashboard upon successful login
+        // Set session in localStorage to indicate user is logged in
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('currentUser', JSON.stringify(user)); // Optional: Store user details if needed
+
+        // Redirect to the dashboard
         navigate('/dashboard');
       } else {
-        // Set error message if login fails
         setError('Invalid email or password');
       }
     } catch (error) {
-      // Handle any unexpected errors
       setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -52,7 +58,6 @@ const Login = () => {
         <div className="w-[752px]">
           {/* Form section */}
           <div className="w-[500px] h-[618px] mt-[203px] ml-[126px] gap-[14px] bg-[#FAFAFA] border border-[#F5F5F5] opacity-100 p-[24px]">
-            {/* This div contains the login form and its elements */}
             <div className="w-[452px] h-[116px] flex items-center justify-center">
               <div className="mr-24">
                 <h1 className="text-[24px] font-semibold text-gray-800">

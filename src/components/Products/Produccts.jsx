@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { HiOutlineShoppingBag } from 'react-icons/hi';
 import productsData from '../../data.json'; // Path to your JSON file
+import { CartContext } from '../context/CartContext'; // Adjust the path if needed
 
 const Produccts = () => {
-  const [products, setProducts] = useState([]);
+  const { addToCart } = useContext(CartContext);
+  const [products, setProducts] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setProducts(productsData);
   }, []);
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+  };
 
   return (
     <div className="w-[1440px] h-[1304px] p-8 flex">
@@ -44,7 +50,10 @@ const Produccts = () => {
                 {product.price}
               </p>
               <p className="text-gray-600 mt-2">{product.description}</p>
-              <button className="w-[245px] h-[42px] flex items-center justify-center bg-[#202020] text-white py-0 px-6 rounded-[5px_0px_0px_0px] mt-4 hover:bg-[#181818] transition-all gap-3">
+              <button
+                className="w-[245px] h-[42px] flex items-center justify-center bg-[#202020] text-white py-0 px-6 rounded-[5px_0px_0px_0px] mt-4 hover:bg-[#181818] transition-all gap-3"
+                onClick={() => handleAddToCart(product)}
+              >
                 <HiOutlineShoppingBag /> Add to cart
               </button>
             </div>

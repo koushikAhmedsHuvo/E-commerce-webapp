@@ -1,48 +1,32 @@
 import React, { createContext, useState, useEffect } from 'react';
 
-// Create AuthContext
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     isAuthenticated: false,
     user: null,
-    token: null,
   });
 
-  // Load the session from localStorage when the app starts
   useEffect(() => {
-    const storedAuth = JSON.parse(localStorage.getItem('auth'));
-    if (storedAuth && storedAuth.token) {
-      setAuth(storedAuth);
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+
+    if (isAuthenticated) {
+      setAuth({ isAuthenticated, user });
     }
   }, []);
 
-  // Save session in localStorage when authentication state changes
-  useEffect(() => {
-    if (auth.isAuthenticated) {
-      localStorage.setItem('auth', JSON.stringify(auth));
-    } else {
-      localStorage.removeItem('auth');
-    }
-  }, [auth]);
-
-  // Login function
-  const login = (user, token) => {
-    setAuth({
-      isAuthenticated: true,
-      user,
-      token,
-    });
+  const login = (user) => {
+    setAuth({ isAuthenticated: true, user });
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('currentUser', JSON.stringify(user));
   };
 
-  // Logout function
   const logout = () => {
-    setAuth({
-      isAuthenticated: false,
-      user: null,
-      token: null,
-    });
+    setAuth({ isAuthenticated: false, user: null });
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('currentUser');
   };
 
   return (
