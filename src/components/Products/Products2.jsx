@@ -36,9 +36,9 @@ const Products2 = () => {
             <div key={category.id}>
               <Link to={`/category/${category.id}`}>
                 <button
-                  className={`w-[231px] h-[53px] text-white text-left px-6 py-3 rounded-tl-lg rounded-tr-none transition-all ${
+                  className={`w-[231px] h-[53px]  text-left px-6 py-3 rounded-tl-lg rounded-tr-none transition-all ${
                     category.isSelected
-                      ? 'bg-[#0E0E0E]'
+                      ? 'bg-[#0E0E0E] text-white'
                       : 'bg-transparent text-[#717171]'
                   }`}
                 >
