@@ -33,7 +33,7 @@ const OrderDetails = () => {
   };
 
   return (
-    <div className="w-[1440px] mx-auto p-8">
+    <div className="w-[1440px] mx-auto p-8 font-Barlow">
       <div>
         <h1 className="text-2xl font-semibold mb-6">
           An Overview of Your Data

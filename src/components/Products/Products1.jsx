@@ -5,21 +5,21 @@ import productsData from '../../data.json'; // Path to your JSON file
 import { CartContext } from '../context/CartContext'; // Adjust the path if needed
 import { IoIosArrowForward } from 'react-icons/io';
 
-const Products = () => {
+const Products1 = () => {
   const { addToCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    // Load products and categories from the JSON data
-    const initialCategories = productsData.categories.map(
-      (category, index) => ({
-        ...category,
-        isSelected: index === 0, // Set the first category as selected by default
-      })
-    );
+    // Load products1 and categories from the JSON data
+    setProducts(productsData.products1);
 
-    setProducts(productsData.products);
+    // Set categories and mark category with id 1 as selected
+    const initialCategories = productsData.categories.map((category) => ({
+      ...category,
+      isSelected: category.id === 2, // Set isSelected true for category id 1
+    }));
+
     setCategories(initialCategories);
   }, []);
 
@@ -35,8 +35,6 @@ const Products = () => {
           {categories.map((category) => (
             <div key={category.id}>
               <Link to={`/category/${category.id}`}>
-                {' '}
-                {/* Wrap with Link */}
                 <button
                   className={`w-[231px] h-[53px] text-white text-left px-6 py-3 rounded-tl-lg rounded-tr-none transition-all ${
                     category.isSelected
@@ -47,7 +45,7 @@ const Products = () => {
                   {category.name}
                 </button>
               </Link>
-              <hr className="border-gray-300 my-2" />
+              <hr className="border-[#E8E8E8] mt-1" />
             </div>
           ))}
         </div>
@@ -83,9 +81,15 @@ const Products = () => {
 
         {/* Pagination */}
         <div className="mt-8 flex space-x-4 justify-center">
-          <button className="bg-gray-200 px-4 py-2 rounded-lg">1</button>
-          <button className="bg-gray-200 px-4 py-2 rounded-lg">2</button>
-          <button className="bg-gray-200 px-4 py-2 rounded-lg">3</button>
+          <button className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300">
+            1
+          </button>
+          <button className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300">
+            2
+          </button>
+          <button className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300">
+            3
+          </button>
           <button className="bg-gray-200 px-4 py-2 rounded-lg">
             <IoIosArrowForward />
           </button>
@@ -95,4 +99,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Products1;

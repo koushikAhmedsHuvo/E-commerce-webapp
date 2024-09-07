@@ -8,7 +8,7 @@ import { FaLinkedinIn } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <div className="w-[1440px] h-[590px] bg-[#0E0E0E] py-[120px] px-[120px]">
+    <div className="w-[1440px] h-[590px] bg-[#0E0E0E] py-[120px] px-[120px] font-Barlow">
       <div className="flex flex-row justify-between gap-10 mb-24">
         {/* First part */}
         <div className="flex flex-col gap-6">

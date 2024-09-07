@@ -3,6 +3,10 @@ import Chair from '../../assets/chair.png';
 import Frame from '../../assets/Frame.png';
 import Visibility from '../../assets/visibility.png';
 import { Link, useNavigate } from 'react-router-dom';
+import Google from '../../assets/google.png';
+import Apple from '../../assets/apple.png';
+import { MdOutlineVisibility } from 'react-icons/md';
+import { MdOutlineVisibilityOff } from 'react-icons/md';
 
 const Signup = () => {
   const [firstName, setFirstName] = useState('');
@@ -64,10 +68,10 @@ const Signup = () => {
           {/* Form section */}
           <div className="w-[500px] h-[618px] mt-[203px] ml-[126px] gap-[14px] bg-[#FAFAFA] border border-[#F5F5F5] opacity-100 p-[24px]">
             <div className="text-center w-[452px] h-[116px] gap-6">
-              <h1 className="text-[24px] font-semibold text-gray-800">
+              <h1 className="text-[24px] font-semibold text-gray-800 font-Barlow">
                 Welcome To
               </h1>
-              <h1 className="text-[40px] font-bold text-black">
+              <h1 className="text-[40px] font-bold text-black font-Barlow">
                 Furni<span className="font-bold text-[#4977EE]">Flex</span>
               </h1>
               <p className="text-gray-600 text-[16px] font-medium">
@@ -161,18 +165,21 @@ const Signup = () => {
                   onBlur={() => setPasswordFocused(false)}
                   placeholder=" "
                   className="w-[452px] h-[52px] px-4 py-2 border border-[#DEDEDE] rounded-md bg-white focus:outline-none"
-                  required
                 />
-                <img
-                  src={Visibility}
-                  alt="Show password"
-                  className="absolute top-1/2 right-4 transform -translate-y-1/2 w-6 h-6 cursor-pointer"
+                <span
                   onClick={togglePasswordVisibility}
-                />
+                  className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
+                >
+                  {passwordVisible ? (
+                    <MdOutlineVisibility className="w-6 h-6" />
+                  ) : (
+                    <MdOutlineVisibilityOff className="w-6 h-6" />
+                  )}
+                </span>
                 <label
                   htmlFor="password"
                   className={`absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-400 transition-transform duration-200 ${
-                    passwordFocused || password ? '-translate-y-6 text-xs' : ''
+                    passwordFocused ? '-translate-y-6 text-xs' : ''
                   }`}
                 >
                   Password
@@ -184,7 +191,7 @@ const Signup = () => {
                 <input type="checkbox" id="terms" required />
                 <label
                   htmlFor="terms"
-                  className="text-gray-600 text-[16px] font-medium"
+                  className="text-gray-600 text-[16px] font-medium font-Barlow"
                 >
                   Agree to the terms and policy
                 </label>
@@ -210,16 +217,27 @@ const Signup = () => {
 
               {/* Social Sign-ins */}
               <div className="flex space-x-4 mt-4">
-                <button className="w-[218px] h-[52px] bg-white border border-[#DEDEDE] rounded-md">
+                <button className="w-[218px] h-[52px] bg-white border border-[#DEDEDE] rounded-md flex items-center justify-center font-Barlow">
+                  <img
+                    src={Google}
+                    alt="Google logo"
+                    className="mr-2 w-[24px] h-[24px]"
+                  />
                   Sign in with Google
                 </button>
-                <button className="w-[218px] h-[52px] bg-white border border-[#DEDEDE] rounded-md">
-                  Sign in with Facebook
+
+                <button className="w-[218px] h-[52px] bg-white border border-[#DEDEDE] rounded-md flex items-center justify-center font-Barlow">
+                  <img
+                    src={Apple}
+                    alt="Apple logo"
+                    className="mr-2 w-[24px] h-[24px]"
+                  />
+                  Sign in with Apple
                 </button>
               </div>
-              <p className="text-center text-gray-600 mt-4">
+              <p className="text-center text-gray-600 mt-4 font-Barlow">
                 Have an account?{' '}
-                <Link to="/" className="text-[#BF2879] hover:underline">
+                <Link to="/" className="text-[#0F3DDE] underline font-Barlow">
                   Signin
                 </Link>
               </p>

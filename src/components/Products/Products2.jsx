@@ -1,25 +1,25 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { HiOutlineShoppingBag } from 'react-icons/hi';
-import { Link } from 'react-router-dom'; // Import Link
 import productsData from '../../data.json'; // Path to your JSON file
 import { CartContext } from '../context/CartContext'; // Adjust the path if needed
+import { Link } from 'react-router-dom'; // Import Link
 import { IoIosArrowForward } from 'react-icons/io';
 
-const Products = () => {
+const Products2 = () => {
   const { addToCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     // Load products and categories from the JSON data
-    const initialCategories = productsData.categories.map(
-      (category, index) => ({
-        ...category,
-        isSelected: index === 0, // Set the first category as selected by default
-      })
-    );
+    setProducts(productsData.products2);
 
-    setProducts(productsData.products);
+    // Set categories and mark category with id 1 as selected
+    const initialCategories = productsData.categories.map((category) => ({
+      ...category,
+      isSelected: category.id === 3, // Set isSelected true for category id 1
+    }));
+
     setCategories(initialCategories);
   }, []);
 
@@ -35,8 +35,6 @@ const Products = () => {
           {categories.map((category) => (
             <div key={category.id}>
               <Link to={`/category/${category.id}`}>
-                {' '}
-                {/* Wrap with Link */}
                 <button
                   className={`w-[231px] h-[53px] text-white text-left px-6 py-3 rounded-tl-lg rounded-tr-none transition-all ${
                     category.isSelected
@@ -95,4 +93,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Products2;

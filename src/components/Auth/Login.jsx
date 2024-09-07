@@ -2,10 +2,12 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Chair from '../../assets/chair.png';
 import Frame from '../../assets/Frame.png';
-import Visibility from '../../assets/visibility.png';
-import VisibilityOff from '../../assets/visibility.png'; // Corrected icon for hiding password
+import Google from '../../assets/google.png';
+import Apple from '../../assets/apple.png';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext'; // Import the AuthContext
+import { AuthContext } from '../context/AuthContext';
+import { MdOutlineVisibility } from 'react-icons/md';
+import { MdOutlineVisibilityOff } from 'react-icons/md';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,13 +18,13 @@ const Login = () => {
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
 
-  const { login } = useContext(AuthContext); // Access login from AuthContext
-  const navigate = useNavigate(); // Hook for navigation
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(''); // Reset error message on submit
+    setError('');
 
     try {
       const users = JSON.parse(localStorage.getItem('users')) || [];
@@ -31,11 +33,9 @@ const Login = () => {
       );
 
       if (user) {
-        // Set session in localStorage to indicate user is logged in
         localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('currentUser', JSON.stringify(user)); // Optional: Store user details if needed
+        localStorage.setItem('currentUser', JSON.stringify(user));
 
-        // Redirect to the dashboard
         navigate('/dashboard');
       } else {
         setError('Invalid email or password');
@@ -56,14 +56,13 @@ const Login = () => {
       <div className="flex bg-white shadow-lg rounded-lg overflow-hidden w-full h-full">
         {/* Left section */}
         <div className="w-[752px]">
-          {/* Form section */}
           <div className="w-[500px] h-[618px] mt-[203px] ml-[126px] gap-[14px] bg-[#FAFAFA] border border-[#F5F5F5] opacity-100 p-[24px]">
             <div className="w-[452px] h-[116px] flex items-center justify-center">
               <div className="mr-24">
-                <h1 className="text-[24px] font-semibold text-gray-800">
+                <h1 className="text-[24px] font-semibold font-Barlow text-gray-800">
                   Welcome Back!
                 </h1>
-                <p className="text-gray-600 text-[16px] font-medium">
+                <p className="text-gray-600 text-[16px] font-medium font-Barlow">
                   Enter your credentials to access your account
                 </p>
               </div>
@@ -104,12 +103,16 @@ const Login = () => {
                   placeholder=" "
                   className="w-[452px] h-[52px] px-4 py-2 border border-[#DEDEDE] rounded-md bg-white focus:outline-none"
                 />
-                <img
-                  src={passwordVisible ? Visibility : VisibilityOff}
-                  alt="Toggle password visibility"
+                <span
                   onClick={togglePasswordVisibility}
-                  className="absolute top-1/2 right-4 transform -translate-y-1/2 w-6 h-6 cursor-pointer"
-                />
+                  className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
+                >
+                  {passwordVisible ? (
+                    <MdOutlineVisibility className="w-6 h-6" />
+                  ) : (
+                    <MdOutlineVisibilityOff className="w-6 h-6" />
+                  )}
+                </span>
                 <label
                   htmlFor="password"
                   className={`absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-400 transition-transform duration-200 ${
@@ -120,32 +123,31 @@ const Login = () => {
                 </label>
               </div>
 
-              {/* Error message */}
               {error && (
                 <p className="text-red-500 text-sm mt-2 text-center">{error}</p>
               )}
 
-              {/* Forget password */}
               <div className="flex justify-end">
                 <p className="text-right text-gray-600 text-sm">
-                  <a href="#" className="text-[#BF2879] hover:underline">
+                  <a
+                    href="#"
+                    className="text-[#BF2879] hover:underline font-Barlow"
+                  >
                     Forgot password?
                   </a>
                 </p>
               </div>
 
-              {/* Terms and conditions */}
               <div className="flex items-center space-x-2">
                 <input type="checkbox" id="terms" />
                 <label
                   htmlFor="terms"
-                  className="text-gray-600 text-[16px] font-medium"
+                  className="text-gray-600 text-[16px] font-medium font-Barlow"
                 >
                   Agree to the terms and policy
                 </label>
               </div>
 
-              {/* Sign In Button */}
               <button
                 type="submit"
                 className="w-[452px] h-[56px] bg-black text-white font-medium rounded-md"
@@ -154,27 +156,35 @@ const Login = () => {
                 {loading ? 'Signing In...' : 'Sign In'}
               </button>
 
-              {/* Horizontal lines and "or" text */}
               <div className="flex items-center justify-center space-x-4 mt-4">
                 <hr className="w-[200px] border-t border-gray-300" />
                 <span className="text-gray-500">or</span>
                 <hr className="w-[200px] border-t border-gray-300" />
               </div>
 
-              {/* Social Sign-ins */}
               <div className="flex space-x-4 mt-4">
-                <button className="w-[218px] h-[52px] bg-white border border-[#DEDEDE] rounded-md">
+                <button className="w-[218px] h-[52px] bg-white border border-[#DEDEDE] rounded-md flex items-center justify-center font-Barlow">
+                  <img
+                    src={Google}
+                    alt="Google logo"
+                    className="mr-2 w-[24px] h-[24px]"
+                  />
                   Sign in with Google
                 </button>
-                <button className="w-[218px] h-[52px] bg-white border border-[#DEDEDE] rounded-md">
+
+                <button className="w-[218px] h-[52px] bg-white border border-[#DEDEDE] rounded-md flex items-center justify-center font-Barlow">
+                  <img
+                    src={Apple}
+                    alt="Apple logo"
+                    className="mr-2 w-[24px] h-[24px]"
+                  />
                   Sign in with Apple
                 </button>
               </div>
 
-              {/* Signup link */}
-              <p className="text-center text-gray-600 mt-4">
+              <p className="text-center text-gray-600 mt-4 font-Barlow">
                 Don’t have an account?{' '}
-                <Link to="/signup" className="text-[#BF2879] hover:underline">
+                <Link to="/signup" className="text-[#0F3DDE] underline">
                   Sign up
                 </Link>
               </p>
